@@ -24,7 +24,62 @@
      */
 
     // TODO Votre code ici, commencez par require un des objet de connexion que nous avons fait ensemble.
+    try {
+        $server = "localhost";
+        $db = "exo_196";
+        $user = "root";
+        $password = "";
 
+        $pdo = new PDO("mysql:host=$server;dbname=$db", $user, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+        $stmt = $pdo->prepare("SELECT MIN(age) as minimum FROM exo_196.user");
+        $state = $stmt->execute();
+        if ($state) {
+            $min = $stmt->fetch();
+            echo "L'age le plus jeune ayant été trouvé est : " . $min['minimum'] . " ans." ."<br>";
+        }
+
+        $stmt2 = $pdo->prepare("SELECT MAX(age) as maximum FROM exo_196.user");
+        $state2 = $stmt2->execute();
+        if ($state2) {
+            $max = $stmt2->fetch();
+            echo "L'age le plus vieux ayant été trouvé est : " . $max['maximum'] . " ans." ."<br>";
+        }
+
+        $stmt3 = $pdo->prepare("SELECT count(*) as number FROM exo_196.user");
+        $state3 = $stmt3->execute();
+        if ($state3) {
+            $count = $stmt3->fetch();
+            echo "Il y a " . $count['number']. " utilisateurs"."<br>";
+        }
+
+        $stmt4 = $pdo->prepare("SELECT count(*) as number FROM exo_196.user WHERE numero >= 5");
+        $state4 = $stmt4->execute();
+        if ($state4) {
+            $count = $stmt4->fetch();
+            echo "Il y a " . $count['number']. " utilisateurs". " avec un numéro de rue plus grand ou égal à 5"."<br>";
+        }
+
+        $stmt5 = $pdo->prepare("SELECT AVG(age) as moyenne FROM exo_196.user");
+        $state5 = $stmt5->execute();
+        if ($state5) {
+            $count = $stmt5->fetch();
+            echo "La moyenne d'age est de : " . $count['moyenne']. " ans"."<br>";
+        }
+
+        $stmt6 = $pdo->prepare("SELECT SUM(numero) as somme FROM exo_196.user");
+        $state6 = $stmt6->execute();
+        if ($state6) {
+            $count = $stmt6->fetch();
+            echo "La somme des numeros est de : ".$count['somme']."<br>";
+        }
+
+    }
+    catch (PDOException $exception) {
+        echo $exception->getMessage();
+    }
 
     ?>
 </body>
